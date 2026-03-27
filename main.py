@@ -1,5 +1,4 @@
 from typing import cast
-from typing_extensions import runtime
 from manim import (
     BOLD,
     PURPLE,
@@ -29,6 +28,10 @@ from manim import (
     WHITE,
     GREEN,
     FadeTransform,
+    AnimationGroup,
+    Succession,
+    Restore,
+    ApplyMethod,
 )
 
 
@@ -207,22 +210,50 @@ class IntroScene(Scene):
         hobby = Text(
             "In my spare time, I enjoy building my own projects, playing Minecraft,",
             t2c=cast(
-                dict[str, str], {"building my own projects": GREEN, "Minecraft": GREEN}
+                dict[str, str], {"building my own projects": BLUE, "Minecraft": GREEN}
             ),
             font_size=28,
         ).to_edge(DOWN)
 
-        cursor = Rectangle(
-            color=GREY_A, fill_color=GREY_A, fill_opacity=1.0, height=0.5, width=0
-        ).move_to(hobby[0])
+        proj_part = hobby[20:41]
+        mine_part = hobby[49:58]
 
-        self.play(TypeWithCursor(hobby[:41], cursor))
+        proj_part.save_state()
+        mine_part.save_state()
 
-        self.play(hobby[20:41].animate.scale(1.5).set_color(GREEN))
+        cursor.next_to(hobby[0])
 
         self.play(
-            TypeWithCursor(hobby[41:60], cursor), hobby[20:41].animate.scale(1 / 1.5)
+            Succession(
+                TypeWithCursor(cast("Text", hobby[:41]), cursor, run_time=3),
+                ApplyMethod(proj_part.scale, 1.5, run_time=0.8),
+                AnimationGroup(
+                    TypeWithCursor(cast("Text", hobby[41:60]), cursor, run_time=2),
+                    Restore(proj_part, run_time=0.8),
+                ),
+                ApplyMethod(mine_part.scale, 1.5, run_time=0.8),
+                Restore(mine_part, run_time=0.8),
+            )
         )
 
-        self.play(hobby[49:58].animate.scale(1.5).set_color(GREEN))
-        self.play(Blink(cursor, blinks=2))
+        self.play(FadeOut(hobby, cursor, run_time=0.3))
+
+        line1_int = Text(
+            "and one interesting fact about me is that I'm currently",
+            font_size=28,
+        ).to_edge(DOWN, buff=1.2)
+
+        line2_int = Text(
+            "making my own compiler from scratch,",
+            t2c=cast(dict[str, str], {"compiler": BLUE, "scratch": RED}),
+            font_size=28,
+        ).next_to(line1_int, DOWN)
+
+        cursor.next_to(line1_int[0], LEFT, buff=0.05)
+
+        self.play(TypeWithCursor(line1_int, cursor))
+
+        cursor.next_to(line2_int[0])
+        self.play(TypeWithCursor(line2_int, cursor))
+
+        self.play(FadeOut(line1_int, line2_int, cursor))
