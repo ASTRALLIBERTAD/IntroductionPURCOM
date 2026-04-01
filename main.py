@@ -4,6 +4,7 @@ from manim.utils.color import YELLOW_A
 import numpy as np
 from manim import (
     BOLD,
+    PINK,
     PURPLE,
     RED,
     YELLOW,
@@ -36,7 +37,6 @@ from manim import (
     Restore,
     ApplyMethod,
 )
-from svgelements import Length
 
 
 class IntroScene(Scene):
@@ -310,13 +310,13 @@ class IntroScene(Scene):
         example_brain = ImageMobject("example_brain.PNG")
 
         self.play(
-            FadeIn(prog_name, brain_logo),
+            FadeIn(prog_name, brain_logo, brain_txt),
         )
 
         self.wait(1.8)
 
         self.play(
-            brain_logo.animate.to_edge(LEFT), FadeIn(example_brain), FadeIn(brain_txt)
+            brain_logo.animate.to_edge(LEFT), FadeIn(example_brain), FadeOut(brain_txt)
         )
 
         self.wait(1.8)
@@ -333,7 +333,7 @@ class IntroScene(Scene):
 
         self.play(
             Transform(about_me, expectation),
-            FadeOut(brain_logo, prog_name, brain_txt, example_brain, run_time=0.8),
+            FadeOut(brain_logo, prog_name, example_brain, run_time=0.8),
             TypeWithCursor(expectations_line1, cursor, run_time=2.5),
         )
 
@@ -363,6 +363,28 @@ class IntroScene(Scene):
 
         self.play(FadeOut(monkey), FadeOut(expectations_line1, expectations_line2))
 
+        end_line1 = Text(
+            "That’s all for my introduction.",
+            t2c=cast(
+                dict[str, str],
+                {
+                    "introduction": YELLOW,
+                },
+            ),
+        )
+        end_line2 = Text(
+            "Thank you for watching.",
+            t2c=cast(
+                dict[str, str],
+                {
+                    "Thank": BLUE,
+                    "you": PINK,
+                    "for": PURPLE,
+                    "watching": RED,
+                },
+            ),
+        ).next_to(end_line1, DOWN)
+
         gif_path = "assets/astra.gif"
         pil_gif = Image.open(gif_path)
 
@@ -379,5 +401,7 @@ class IntroScene(Scene):
 
         gif_mobject.add_updater(update_gif)
 
+        self.play(Write(end_line1), Write(end_line2), FadeOut(expectation, about_me))
+        self.wait(3)
         self.add(gif_mobject)
         self.wait(5)
