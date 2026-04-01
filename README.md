@@ -144,7 +144,7 @@ media/videos/main/<quality>/IntroScene.mp4
 </td>
 <td align="center">
   <a href="https://github.com/ASTRALLIBERTAD/Brain">
-    <img src="https://raw.githubusercontent.com/ASTRALLIBERTAD/Brain/main/mascot.png" width="120" alt="Brain Programming Language"/><br/>
+    <img src="assets/brain_logo.png" width="120" alt="Brain Programming Language"/><br/>
     <b>Brain Programming Language</b>
   </a><br/>
   <sub>A custom programming language built from scratch in Rust, featured in this video.</sub>
