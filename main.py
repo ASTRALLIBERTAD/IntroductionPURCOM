@@ -64,13 +64,15 @@ class IntroScene(Scene):
         self.play(Write(exec_text, run_time=0.8))
         self.wait(1)
 
-        # 8. Fade out everything
+        self.add_sound("audio/mice_on_venus.mp3", gain=-18)
+
+        self.add_sound("audio/name.aac")
         self.play(FadeOut(prompt, cursor, exec_text, full_text))
 
         name = Text("Prince Gabrielle Jhon M. Libertad", gradient=(BLUE, WHITE)).scale(
             1.2
         )
-        subtitle = Text("Computer Engineering Student", font_size=24).next_to(
+        subtitle = Text("BS Computer Engineering Student", font_size=24).next_to(
             name, DOWN
         )
 
@@ -83,19 +85,21 @@ class IntroScene(Scene):
         self.play(me_img.animate.to_edge(UP))
 
         arrow = Arrow(2 * RIGHT, 2 * LEFT)
+
+        self.play(me_img.animate.to_edge(UL))
+
         arrow.next_to(me_img)
 
-        self.play(me_img.animate.to_edge(UL), GrowArrow(arrow, point_color=RED))
-
         me = Text("This is me", gradient=(YELLOW, RED)).scale(1.2)
-        self.play(arrow.animate.next_to(me_img))
+
+        self.play(GrowArrow(arrow, point_color=RED, run_time=0.8))
         me.next_to(arrow)
 
         self.play(FadeIn(me))
 
         details = Paragraph(
             "18 years old",
-            "Location: Sta. Mesa, Manila",
+            "Sta. Mesa, Manila",
             alignment="left",
             font="sans-serif",
             weight=BOLD,
@@ -113,26 +117,29 @@ class IntroScene(Scene):
             font_size=28,
         ).to_edge(DOWN)
 
+        self.add_sound("audio/video_code.aac", gain=-5)
         self.play(Write(intro_sub, run_time=2))
-        self.wait(3)
+        self.wait(4)
 
         curios_sub = Paragraph(
-            "If you are curios, you can scan this QR code",
+            "If you are curious, you can scan this QR code",
             "to view the source code behind this video",
             t2c={"curios": RED, "QR": PURPLE, "view": YELLOW},
         )
 
         qr = ImageMobject("qr.png").scale(0.5)
         qr.to_edge(UP)
+
+        self.add_sound("audio/curious.aac", gain=-5)
         self.play(
             Transform(intro_sub, curios_sub),
             FadeOut(name, subtitle, details, arrow, me),
             FadeTransform(me_img, qr),
         )
 
-        self.wait(5)
+        self.wait(6)
 
-        interest = Text("Interests", gradient=(BLUE, RED)).scale(1.3)
+        interest = Text("Why I chose BSCpE", gradient=(BLUE, RED)).scale(1.3)
 
         iter_sub = Paragraph(
             "Some of my interests include programming, game development",
@@ -140,6 +147,7 @@ class IntroScene(Scene):
             font_size=28,
         ).to_edge(DOWN)
 
+        self.add_sound("audio/interest_line1.aac", gain=-5)
         self.play(
             FadeTransform(qr, interest), ReplacementTransform(intro_sub, iter_sub)
         )
@@ -171,6 +179,7 @@ class IntroScene(Scene):
         self.play(
             godot_img.animate.scale(0.5),
             line[36:56].animate.scale(1 / 1.5).set_opacity(0.3),
+            run_time=0.8,
         )
 
         lainst_sub = Text(
@@ -179,8 +188,9 @@ class IntroScene(Scene):
             font_size=28,
         ).to_edge(DOWN)
 
-        self.play(FadeOut(intro_sub, iter_sub))
+        self.play(FadeOut(intro_sub, iter_sub, run_time=0.5))
 
+        self.add_sound("audio/interest_line2.aac", gain=-5)
         self.play(Write(lainst_sub))
         ker_part = lainst_sub[16:22]
         os_part = lainst_sub[25:41]
@@ -192,8 +202,8 @@ class IntroScene(Scene):
 
         self.play(
             lainst_sub.animate.set_opacity(0.3),
-            ker_part.animate.scale(1.4),
-            os_part.animate.scale(1.4),
+            ker_part.animate.scale(1.3),
+            os_part.animate.scale(1.3),
             FadeIn(linux_img, Windows_img),
         )
 
@@ -202,8 +212,8 @@ class IntroScene(Scene):
         )
         self.play(
             linux_img.animate.next_to(Windows_img, LEFT),
-            ker_part.animate.scale(1 / 1.5).set_opacity(0.3),
-            os_part.animate.scale(1 / 1.5).set_opacity(0.3),
+            ker_part.animate.scale(1 / 1.3).set_opacity(0.3),
+            os_part.animate.scale(1 / 1.3).set_opacity(0.3),
         )
 
         about_me = Text("About Me", gradient=(RED, BLUE)).scale(1.3)
@@ -239,6 +249,7 @@ class IntroScene(Scene):
 
         cursor.next_to(hobby[0])
 
+        self.add_sound("audio/hobby.aac", gain=-5)
         self.play(
             Succession(
                 TypeWithCursor(cast("Text", hobby[:41]), cursor, run_time=3),
@@ -281,6 +292,7 @@ class IntroScene(Scene):
 
         cursor.next_to(line1_int[0], LEFT, buff=0.05)
 
+        self.add_sound("audio/interesting.aac", gain=-5)
         self.play(
             TypeWithCursor(line1_int, cursor, run_time=3.2),
             FadeIn(programming_brain, run_time=0.8),
@@ -307,17 +319,16 @@ class IntroScene(Scene):
             "BRAIN", t2c=cast(dict[str, str], {"BRAIN": YELLOW_A}), font_size=37
         ).next_to(brain_logo, DOWN)
 
-        example_brain = ImageMobject("example_brain.PNG")
+        example_brain = ImageMobject("example_brain.PNG").scale(1.4)
 
+        self.add_sound("audio/brain.aac", gain=-5)
         self.play(
             FadeIn(prog_name, brain_logo, brain_txt),
         )
 
         self.wait(1.8)
 
-        self.play(
-            brain_logo.animate.to_edge(LEFT), FadeIn(example_brain), FadeOut(brain_txt)
-        )
+        self.play(FadeIn(example_brain), FadeOut(brain_txt, brain_logo))
 
         self.wait(1.8)
 
@@ -331,9 +342,10 @@ class IntroScene(Scene):
 
         cursor.next_to(expectations_line1)
 
+        self.add_sound("audio/expectations.aac", gain=-5)
         self.play(
             Transform(about_me, expectation),
-            FadeOut(brain_logo, prog_name, example_brain, run_time=0.8),
+            FadeOut(prog_name, example_brain, run_time=0.8),
             TypeWithCursor(expectations_line1, cursor, run_time=2.5),
         )
 
@@ -359,7 +371,7 @@ class IntroScene(Scene):
             TypeWithCursor(expectations_line2, cursor, run_time=2.5), FadeIn(monkey)
         )
 
-        self.wait(3)
+        self.wait(4.8)
 
         self.play(FadeOut(monkey), FadeOut(expectations_line1, expectations_line2))
 
@@ -401,6 +413,7 @@ class IntroScene(Scene):
 
         gif_mobject.add_updater(update_gif)
 
+        self.add_sound("audio/out.aac", gain=-5)
         self.play(Write(end_line1), Write(end_line2), FadeOut(expectation, about_me))
         self.wait(3)
         self.add(gif_mobject)
